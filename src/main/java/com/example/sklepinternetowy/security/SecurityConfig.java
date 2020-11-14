@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenVerificationToken(), JwtUserNameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/*").permitAll()
-                .antMatchers("/", "/css/*", "/js/*", "/api/v1/signup/").permitAll()
+                .antMatchers("/", "/css/*", "/js/*", "/api/v1/signup/","/api/v1/role/**").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/login/").permitAll()

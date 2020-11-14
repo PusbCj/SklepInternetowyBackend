@@ -3,8 +3,7 @@ package com.example.sklepinternetowy.models.user;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Entity
@@ -21,6 +20,7 @@ public class Role implements GrantedAuthority {
     private Set<UserApplication> userApplicationList;
 
     public Role() {
+        permissionList=new ArrayList<>();
     }
 
     public Role(String name, List<Permission> permissionList) {

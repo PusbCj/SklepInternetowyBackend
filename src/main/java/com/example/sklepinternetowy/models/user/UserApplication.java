@@ -1,5 +1,6 @@
 package com.example.sklepinternetowy.models.user;
 
+import com.example.sklepinternetowy.models.Address;
 import com.example.sklepinternetowy.models.user.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +32,8 @@ public class UserApplication implements UserDetails {
     private String email;
     private String firstName;
     private String lastName;
+    @OneToMany
+    private Set<Address> address;
 
 
     public UserApplication() {
@@ -120,5 +123,13 @@ public class UserApplication implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Set<Address> getAddress() {
+        return address;
+    }
+
+    public void setAddress(Set<Address> address) {
+        this.address = address;
     }
 }

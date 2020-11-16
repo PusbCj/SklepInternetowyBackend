@@ -4,6 +4,7 @@ import com.example.sklepinternetowy.exception.EmailAlreadyExistInDatabaseExcepti
 import com.example.sklepinternetowy.exception.UsernameAlreadyExistInDatabaseException;
 import com.example.sklepinternetowy.models.user.UserApplication;
 import com.example.sklepinternetowy.models.user.UserDtoRegister;
+import com.example.sklepinternetowy.repositories.AddressRepository;
 import com.example.sklepinternetowy.repositories.user.RoleRepository;
 import com.example.sklepinternetowy.repositories.user.UserApplicationRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,11 +20,13 @@ public class UserServiceImpl implements UserService{
     private final UserApplicationRepository userApplicationRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AddressRepository addressRepository;
 
-    public UserServiceImpl(UserApplicationRepository userApplicationRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserApplicationRepository userApplicationRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, AddressRepository addressRepository) {
         this.userApplicationRepository = userApplicationRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.addressRepository = addressRepository;
     }
 
     @Transactional
@@ -33,7 +36,7 @@ public class UserServiceImpl implements UserService{
         UserApplication userApplication = userApplicationFromUserDtoRegistration(userDtoRegister);
         userApplication.setPassword(passwordEncoder.encode(userApplication.getPassword()));
         userApplication.getRoleList().add(roleRepository.findById(1L).get());//Always exist UserRole therefore We don't check.
-
+        addressRepository.saveAll(userApplication.getAddress());
         userApplicationRepository.save(userApplication);
     }
 

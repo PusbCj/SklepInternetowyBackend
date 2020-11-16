@@ -6,9 +6,6 @@ import javax.validation.constraints.Size;
 
 public class UserDtoRegister {
 
-    private Long id;
-
-
     @NotBlank
     @Size(min= 5, max=50)
     private String username;
@@ -27,16 +24,20 @@ public class UserDtoRegister {
     @Size(min=5, max=100)
     private String email;
 
+    @NotBlank
+    private String nameAddress;
+    @NotBlank
+    private Integer houseNumber;
+    private String street;
+    @NotBlank
+    private String city;
+    @NotBlank
+    private String postCode;
+
     public UserDtoRegister() {
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -76,5 +77,45 @@ public class UserDtoRegister {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getNameAddress() {
+        return nameAddress;
+    }
+
+    public void setNameAddress(String nameAddress) {
+        this.nameAddress = nameAddress;
+    }
+
+    public Integer getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(Integer houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
     }
 }

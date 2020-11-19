@@ -10,4 +10,5 @@ public interface UserApplicationRepository extends JpaRepository<UserApplication
 
     Optional<UserApplication> findByUsername(String username);
     Optional<UserApplication> findByEmail(String email);
+    Optional<UserApplication> findByActivateFalseAndKeyActivationAndUsername(String key,String username);
 }

@@ -32,6 +32,8 @@ public class UserApplication implements UserDetails {
     private String email;
     private String firstName;
     private String lastName;
+    private String keyActivation;
+    private Boolean activate;
     @OneToMany
     private Set<Address> address;
 
@@ -74,7 +76,7 @@ public class UserApplication implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return activate;
     }
 
     public Long getId() {
@@ -131,5 +133,21 @@ public class UserApplication implements UserDetails {
 
     public void setAddress(Set<Address> address) {
         this.address = address;
+    }
+
+    public String getKeyActivation() {
+        return keyActivation;
+    }
+
+    public void setKeyActivation(String keyActivation) {
+        this.keyActivation = keyActivation;
+    }
+
+    public Boolean getActivate() {
+        return activate;
+    }
+
+    public void setActivate(Boolean activate) {
+        this.activate = activate;
     }
 }

@@ -1,15 +1,16 @@
 package com.example.sklepinternetowy.controllers;
 
+import com.example.sklepinternetowy.exception.ActivationKeyIsInvalid;
+import com.example.sklepinternetowy.exception.EmailAlreadyExistInDatabaseException;
+import com.example.sklepinternetowy.exception.UsernameAlreadyExistInDatabaseException;
+import com.example.sklepinternetowy.models.ErrorMessage;
 import com.example.sklepinternetowy.models.user.UserDtoRegister;
 import com.example.sklepinternetowy.models.user.UsernameAndPassword;
 import com.example.sklepinternetowy.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,5 +29,21 @@ public class RegistrationController {
     public ResponseEntity register(@Valid @RequestBody UserDtoRegister userDtoRegister){
         userService.signup(userDtoRegister);
         return new ResponseEntity(HttpStatus.OK);
+    }
+    @GetMapping
+    public void activateAccount(@RequestParam String key,@RequestParam String username){
+        userService.activateUser(key,username);
+    }
+    @ExceptionHandler(ActivationKeyIsInvalid.class)
+    public ResponseEntity<ErrorMessage> activationKeyIsInvalidHandler(){
+        return new ResponseEntity<ErrorMessage>(new ErrorMessage("Klucz aktywacyjny nieprawidłowy"),HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(EmailAlreadyExistInDatabaseException.class)
+    public ResponseEntity<ErrorMessage> emailAlreadyExistInDatabaseExceptionHandler(){
+        return new ResponseEntity<ErrorMessage>(new ErrorMessage("Użytkownik o podanym adresie email jest już zarejstrowany"),HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(UsernameAlreadyExistInDatabaseException.class)
+    public ResponseEntity<ErrorMessage> usernameAlreadyExistInDatabaseExceptionHandler(){
+        return new ResponseEntity<ErrorMessage>(new ErrorMessage("Użytkownik o podanym niku jest już zarejstrowany"),HttpStatus.BAD_REQUEST);
     }
 }

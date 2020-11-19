@@ -26,7 +26,6 @@ public class UserDtoRegister {
 
     @NotBlank
     private String nameAddress;
-    @NotBlank
     private Integer houseNumber;
     private String street;
     @NotBlank

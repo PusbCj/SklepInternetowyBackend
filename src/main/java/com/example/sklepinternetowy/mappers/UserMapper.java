@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
+import java.util.Random;
 
 public class UserMapper {
 
@@ -27,6 +28,10 @@ public class UserMapper {
         address.setStreet(userDtoRegister.getStreet());
         address.setPostCode(userDtoRegister.getPostCode());
         userApplication.getAddress().add(address);
+        userApplication.setActivate(false);
+        Random random = new Random();
+        userApplication.setKeyActivation(String.valueOf(random.nextInt()));
+
         return userApplication;
     }
 }

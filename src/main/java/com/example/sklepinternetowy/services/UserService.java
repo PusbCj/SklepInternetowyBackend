@@ -6,4 +6,6 @@ public interface UserService {
 
 
     void signup(UserDtoRegister userDtoRegister);
+
+    void activateUser(String key, String username);
 }

@@ -1,5 +1,6 @@
 package com.example.sklepinternetowy.services;
 
+import com.example.sklepinternetowy.exception.ActivationKeyIsInvalid;
 import com.example.sklepinternetowy.exception.EmailAlreadyExistInDatabaseException;
 import com.example.sklepinternetowy.exception.UsernameAlreadyExistInDatabaseException;
 import com.example.sklepinternetowy.models.user.UserApplication;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.util.Optional;
+
 import static com.example.sklepinternetowy.mappers.UserMapper.userApplicationFromUserDtoRegistration;
 
 @Service
@@ -21,12 +24,14 @@ public class UserServiceImpl implements UserService{
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AddressRepository addressRepository;
+    private final MailService mailService;
 
-    public UserServiceImpl(UserApplicationRepository userApplicationRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, AddressRepository addressRepository) {
+    public UserServiceImpl(UserApplicationRepository userApplicationRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, AddressRepository addressRepository, MailService mailService) {
         this.userApplicationRepository = userApplicationRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.addressRepository = addressRepository;
+        this.mailService = mailService;
     }
 
     @Transactional
@@ -38,6 +43,18 @@ public class UserServiceImpl implements UserService{
         userApplication.getRoleList().add(roleRepository.findById(1L).get());//Always exist UserRole therefore We don't check.
         addressRepository.saveAll(userApplication.getAddress());
         userApplicationRepository.save(userApplication);
+        mailService.sendActivationMail(userApplication);
+    }
+
+    @Override
+    @Transactional
+    public void activateUser(String key, String username) {
+        Optional<UserApplication> user = userApplicationRepository.findByActivateFalseAndKeyActivationAndUsername(key,username);
+        if(user.isPresent()){
+            user.get().setActivate(Boolean.TRUE);
+            user.get().setKeyActivation("");
+        }else
+            throw new ActivationKeyIsInvalid("Nie odnaleziono użytkownika do aktywacji");
     }
 
     private void checkIfUserOrEmailAlreadyExistInDatabase(UserDtoRegister userDtoRegister) {

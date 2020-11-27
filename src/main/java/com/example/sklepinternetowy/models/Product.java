@@ -17,7 +17,8 @@ public class Product {
     @Length(max=300)
     private String description;
     private String photoUrl;
-    private Long idStore;
+    private Long quantity;
+    private Long quantityAvailable;
     public Product() {
     }
 
@@ -61,11 +62,21 @@ public class Product {
         this.photoUrl = photoUrl;
     }
 
-    public Long getIdStore() {
-        return idStore;
+    public Long getQuantity() {
+        return quantity;
     }
 
-    public void setIdStore(Long idStore) {
-        this.idStore = idStore;
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
     }
+
+    public Long getQuantityAvailable() {
+        return quantityAvailable;
+    }
+
+    public void setQuantityAvailable(Long quantityAvailable) {
+        this.quantityAvailable = quantityAvailable;
+    }
+
+
 }

@@ -11,6 +11,8 @@ public class Category {
     @OneToMany
     private List<Product> productList;
 
+    private String imgUrl;
+
     public Category() {
     }
 
@@ -36,5 +38,13 @@ public class Category {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }

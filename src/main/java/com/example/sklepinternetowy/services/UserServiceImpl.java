@@ -1,8 +1,6 @@
 package com.example.sklepinternetowy.services;
 
-import com.example.sklepinternetowy.exception.ActivationKeyIsInvalid;
-import com.example.sklepinternetowy.exception.EmailAlreadyExistInDatabaseException;
-import com.example.sklepinternetowy.exception.UsernameAlreadyExistInDatabaseException;
+import com.example.sklepinternetowy.exception.*;
 import com.example.sklepinternetowy.models.user.UserApplication;
 import com.example.sklepinternetowy.models.user.UserDtoRegister;
 import com.example.sklepinternetowy.repositories.AddressRepository;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.Optional;
+import java.util.Random;
 
 import static com.example.sklepinternetowy.mappers.UserMapper.userApplicationFromUserDtoRegistration;
 
@@ -55,6 +54,26 @@ public class UserServiceImpl implements UserService{
             user.get().setKeyActivation("");
         }else
             throw new ActivationKeyIsInvalid("Nie odnaleziono użytkownika do aktywacji");
+    }
+
+    @Override
+    public void generateForgetKey(String username) {
+        Random random= new Random();
+       UserApplication user =userApplicationRepository.findByUsername(username)
+               .orElseThrow(()-> new UserNotExistInDatabase("Uzytkownik nie odnalezniony w bazie"));
+       user.setKeyPassword(random.nextLong());
+       mailService.sendForgetPasswordMail(user.getKeyPassword(), user);
+       userApplicationRepository.save(user);
+
+    }
+
+    @Override
+    public void changeForgottenPassword(String username, String password, Long key) {
+        UserApplication user =userApplicationRepository.findByUsername(username)
+                .orElseThrow(()-> new UserNotExistInDatabase("Uzytkownik nie odnalezniony w bazie"));
+        if (user.getKeyPassword().equals(key)) {
+            user.setPassword(passwordEncoder.encode(password));
+        }else throw new PasswordKeyIsInvalid("Klucz niepoprawny");
     }
 
     private void checkIfUserOrEmailAlreadyExistInDatabase(UserDtoRegister userDtoRegister) {

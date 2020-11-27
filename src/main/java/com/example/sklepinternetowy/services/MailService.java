@@ -48,4 +48,14 @@ public class MailService {
 
         sendEmail(user.getEmail(),"Activation",content,true);
     }
+
+    @Async
+    public void sendForgetPasswordMail(Long keyPassword, UserApplication user) {
+        String content="<p>Żeby zmienić hasło </p>";
+        content+="<a href=\"http://195.80.229.73/changeforgottenpassword?user=" +
+                user.getUsername() + "&key=" + keyPassword+
+                "\">kliknij tu</a>";
+
+        sendEmail(user.getEmail(),"Activation",content,true);
+    }
 }

@@ -33,6 +33,7 @@ public class UserApplication implements UserDetails {
     private String firstName;
     private String lastName;
     private String keyActivation;
+    private Long keyPassword;
     private Boolean activate;
     @OneToMany
     private Set<Address> address;
@@ -133,6 +134,14 @@ public class UserApplication implements UserDetails {
 
     public void setAddress(Set<Address> address) {
         this.address = address;
+    }
+
+    public Long getKeyPassword() {
+        return keyPassword;
+    }
+
+    public void setKeyPassword(Long keyPassword) {
+        this.keyPassword = keyPassword;
     }
 
     public String getKeyActivation() {

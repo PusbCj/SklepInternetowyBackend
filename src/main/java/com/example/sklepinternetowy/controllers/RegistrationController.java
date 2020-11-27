@@ -34,6 +34,17 @@ public class RegistrationController {
     public void activateAccount(@RequestParam String key,@RequestParam String username){
         userService.activateUser(key,username);
     }
+
+    @PostMapping("forget/")
+    public void generateKeyChangePassword(@RequestBody String username){
+        userService.generateForgetKey(username);
+    }
+
+    @PostMapping("changeassword/")
+    public void changePasswordKey(@RequestBody String username, @RequestBody String password, @RequestBody Long key){
+        userService.changeForgottenPassword(username,password,key);
+    }
+
     @ExceptionHandler(ActivationKeyIsInvalid.class)
     public ResponseEntity<ErrorMessage> activationKeyIsInvalidHandler(){
         return new ResponseEntity<ErrorMessage>(new ErrorMessage("Klucz aktywacyjny nieprawidłowy"),HttpStatus.BAD_REQUEST);

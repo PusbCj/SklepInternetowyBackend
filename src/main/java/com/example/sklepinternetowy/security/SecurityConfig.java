@@ -2,6 +2,7 @@ package com.example.sklepinternetowy.security;
 
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,7 +21,9 @@ import com.example.sklepinternetowy.security.jwt.JwtUserNameAndPasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true, securedEnabled = true)
+@ComponentScan(basePackages = {"com.example.sklepinternetowy.controllers"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
@@ -43,12 +46,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenVerificationToken(), JwtUserNameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/*").permitAll()
-                .antMatchers("/","/photo/*", "/css/*", "/js/*", "/api/v1/signup/","/api/v1/role/**","/api/v1/contact/**")
+                .antMatchers("/", "/static/photo/*", "/css/*", "/js/*", "/api/v1/signup/","/api/v1/role/**","/api/v1/contact/**")
                 .permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/login/").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers(HttpMethod.POST, "/login/").permitAll();
+
     }
 
     @Override
@@ -56,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
         super.configure(auth);
     }
+
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

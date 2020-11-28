@@ -2,11 +2,11 @@ package com.example.sklepinternetowy.services;
 
 import com.example.sklepinternetowy.models.Product;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
 
 public interface ProductService {
-    Page<Product> getAllProductsByCategory(Pageable pageable);
+    Page<Product> getAllProductsByCategory(Long categoryNumber, Pageable pageable);
 
     Page<Product> getAllProducts(Pageable pageable);
 

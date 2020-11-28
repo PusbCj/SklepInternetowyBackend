@@ -1,6 +1,9 @@
 package com.example.sklepinternetowy.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 public class Category {
@@ -8,12 +11,14 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @JsonIgnore
     @OneToMany
     private List<Product> productList;
 
     private String imgUrl;
 
     public Category() {
+        productList= new ArrayList<>();
     }
 
     public Long getId() {

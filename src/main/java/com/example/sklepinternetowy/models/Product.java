@@ -3,6 +3,7 @@ package com.example.sklepinternetowy.models;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 public class Product {
@@ -19,6 +20,8 @@ public class Product {
     private String photoUrl;
     private Long quantity;
     private Long quantityAvailable;
+
+    private BigDecimal price;
     public Product() {
     }
 
@@ -78,5 +81,11 @@ public class Product {
         this.quantityAvailable = quantityAvailable;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
 
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 }

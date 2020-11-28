@@ -30,7 +30,7 @@ public class RoleController {
         return roleService.save(role);
     }
 
-    @DeleteMapping({"id"})
+    @DeleteMapping({"{id}"})
     public Role delete(@PathVariable Long id){
         return roleService.delete(id);
     }

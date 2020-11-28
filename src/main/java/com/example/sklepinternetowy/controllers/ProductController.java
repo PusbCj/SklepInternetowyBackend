@@ -4,11 +4,14 @@ import com.example.sklepinternetowy.models.Product;
 import com.example.sklepinternetowy.services.FileService;
 import com.example.sklepinternetowy.services.ProductService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Pageable;
 
+@PreAuthorize("permitAll()")
 @RestController
 @RequestMapping("api/v1/product")
 public class ProductController {
@@ -21,22 +24,25 @@ public class ProductController {
         this.fileService = fileService;
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping
     public Page<Product> getAllProducts(Pageable pageable){
         return productService.getAllProducts(pageable);
     }
-    @GetMapping("/category")
-    public Page<Product> getAllProductsByCategory(@PathVariable Long Categorynumber, Pageable pageable){
-        return productService.getAllProductsByCategory(pageable);
+
+    @PreAuthorize("hasRole('User')")
+    @GetMapping("/category/{categoryNumber}")
+    public Page<Product> getAllProductsByCategory(@PathVariable Long categoryNumber, Pageable pageable){
+        return productService.getAllProductsByCategory(categoryNumber, pageable);
     }
+
+
     @PostMapping
-    public Product save(@RequestParam MultipartFile file, @RequestBody Product product){
-        String filename = fileService.storeFile(file);
-        product.setPhotoUrl("http://195.80.229.73:443/photo/"+filename);
+    public Product save( @RequestBody Product product){
         return productService.save(product);
     }
 
-    @DeleteMapping("id")
+    @DeleteMapping("{id}}")
     public Product delete(@PathVariable Long id){
         return productService.delete(id);
     }

@@ -46,8 +46,8 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product save(Product product) {
         photoUrlRepository.saveAll(product.getPhotoUrl());
-        Product product1 = productRepository.save(product);
-        return product1;
+        return productRepository.save(product);
+
     }
 
     @Override

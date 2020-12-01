@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Product {
@@ -17,12 +19,16 @@ public class Product {
 
     @Length(max=300)
     private String description;
-    private String photoUrl;
+    @OneToMany
+    private List<PhotoUrl> photoUrl;
     private Long quantity;
     private Long quantityAvailable;
+    private String brand;
+    private Long age;
 
     private BigDecimal price;
     public Product() {
+        photoUrl= new ArrayList<>();
     }
 
     public Long getId() {
@@ -57,13 +63,7 @@ public class Product {
         this.description = description;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
 
     public Long getQuantity() {
         return quantity;
@@ -87,5 +87,29 @@ public class Product {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public Long getAge() {
+        return age;
+    }
+
+    public void setAge(Long age) {
+        this.age = age;
+    }
+
+    public void setPhotoUrl(List<PhotoUrl> photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public List<PhotoUrl> getPhotoUrl() {
+        return photoUrl;
     }
 }

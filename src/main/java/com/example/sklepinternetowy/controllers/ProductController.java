@@ -10,6 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+
 
 @PreAuthorize("permitAll()")
 @RestController
@@ -30,11 +32,16 @@ public class ProductController {
         return productService.getAllProducts(pageable);
     }
 
-    @PreAuthorize("hasRole('User')")
+    @PreAuthorize("permitAll()")
     @GetMapping("/category/{categoryNumber}")
-    public Page<Product> getAllProductsByCategory(@PathVariable Long categoryNumber, Pageable pageable){
-        return productService.getAllProductsByCategory(categoryNumber, pageable);
+    public Page<Product> getAllProductsByCategory(@PathVariable Long categoryNumber,@RequestParam(required = false) String brand,
+                                                  @RequestParam(required = false) Long age,@RequestParam(required = false) BigDecimal priceLow,
+                                                  @RequestParam(required = false) BigDecimal priceHigh,@RequestParam(required = false) Boolean desc
+            ,Pageable pageable){
+        return productService.getAllProductsByCategory(categoryNumber, pageable,brand,age,priceLow,priceHigh,desc);
     }
+
+
 
 
     @PostMapping

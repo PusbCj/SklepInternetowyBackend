@@ -15,7 +15,7 @@ public class Address {
     private long id;
 
     private String name;
-    private Integer houseNumber;
+    private String houseNumber;
     private String street;
     private String city;
     private String postCode;
@@ -39,11 +39,11 @@ public class Address {
         this.name = name;
     }
 
-    public Integer getHouseNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(Integer houseNumber) {
+    public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
 

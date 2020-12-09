@@ -46,7 +46,7 @@ public class MailService {
                 user.getUsername() + "&key=" + user.getKeyActivation()+
         "\">Aktywuj</a>";
 
-        sendEmail(user.getEmail(),"Activation",content,true);
+        sendEmail(user.getEmail(),"Aktywacja konta",content,true);
     }
 
     @Async
@@ -56,6 +56,6 @@ public class MailService {
                 user.getUsername() + "&key=" + keyPassword+
                 "\">kliknij tu</a>";
 
-        sendEmail(user.getEmail(),"Activation",content,true);
+        sendEmail(user.getEmail(),"Przypomnienie hasła",content,true);
     }
 }

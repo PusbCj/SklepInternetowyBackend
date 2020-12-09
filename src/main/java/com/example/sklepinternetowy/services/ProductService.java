@@ -20,4 +20,6 @@ public interface ProductService {
 
 
     Page<Product> getAllProductsByCategory(Long categoryNumber, Pageable pageable, String brand, Long age, BigDecimal priceLow, BigDecimal priceHigh, Boolean desc);
+
+    Product getById(Long id);
 }

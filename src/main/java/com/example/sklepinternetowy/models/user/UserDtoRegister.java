@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 public class UserDtoRegister {
 
     @NotBlank
-    @Size(min= 5, max=50)
+    @Size(min= 2, max=50)
     private String username;
 
     @Size(max=50)
@@ -24,13 +24,13 @@ public class UserDtoRegister {
     @Size(min=5, max=100)
     private String email;
 
-    @NotBlank
+
     private String nameAddress;
-    private Integer houseNumber;
+    private String houseNumber;
     private String street;
-    @NotBlank
+
     private String city;
-    @NotBlank
+
     private String postCode;
 
     public UserDtoRegister() {
@@ -86,11 +86,11 @@ public class UserDtoRegister {
         this.nameAddress = nameAddress;
     }
 
-    public Integer getHouseNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(Integer houseNumber) {
+    public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
 

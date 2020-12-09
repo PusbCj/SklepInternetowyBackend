@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService{
         checkIfUserOrEmailAlreadyExistInDatabase(userDtoRegister);
         UserApplication userApplication = userApplicationFromUserDtoRegistration(userDtoRegister);
         userApplication.setPassword(passwordEncoder.encode(userApplication.getPassword()));
-        userApplication.getRoleList().add(roleRepository.findById(1L).get());//Always exist UserRole therefore We don't check.
+        userApplication.getRoleList().add(roleRepository.findFirstByName("User").get());//Always exist UserRole therefore We don't check.
         addressRepository.saveAll(userApplication.getAddress());
         userApplicationRepository.save(userApplication);
         mailService.sendActivationMail(userApplication);

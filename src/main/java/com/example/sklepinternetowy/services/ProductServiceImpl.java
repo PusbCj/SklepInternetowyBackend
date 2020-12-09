@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService{
     }
     @Override
     public Page<Product> getAllProductsByCategoryDesc(Long categoryNumber, Pageable pageable) {
-        return productRepository.findAllByCategory_IdOrderByPriceAsc(categoryNumber, pageable);
+        return productRepository.findAllByCategory_IdOrderByPriceDesc(categoryNumber, pageable);
     }
 
     @Override
@@ -53,10 +53,16 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Page<Product> getAllProductsByCategory(Long categoryNumber, Pageable pageable, String brand, Long age, BigDecimal priceLow, BigDecimal priceHigh, Boolean desc) {
        if(desc==null) desc=false;
+
         if( !false )
         return getProductsAsc(categoryNumber, pageable, brand, age, priceLow, priceHigh);
         else
             return getProductsDesc(categoryNumber, pageable, brand, age, priceLow, priceHigh);
+    }
+
+    @Override
+    public Product getById(Long id) {
+        return productRepository.findById(id).orElseThrow(()->new ProductNotFindException("Nie odnaleziono produktu"));
     }
 
     private Page<Product> getProductsAsc(Long categoryNumber, Pageable pageable, String brand, Long age, BigDecimal priceLow, BigDecimal priceHigh) {

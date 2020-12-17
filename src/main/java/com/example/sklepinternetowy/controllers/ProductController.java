@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 
 @PreAuthorize("permitAll()")
@@ -34,11 +36,13 @@ public class ProductController {
 
     @PreAuthorize("permitAll()")
     @GetMapping("/category/{categoryNumber}")
-    public Page<Product> getAllProductsByCategory(@PathVariable Long categoryNumber,@RequestParam(required = false) String brand,
-                                                  @RequestParam(required = false) Long age,@RequestParam(required = false) BigDecimal priceLow,
-                                                  @RequestParam(required = false) BigDecimal priceHigh,@RequestParam(required = false) Boolean desc
-            ,Pageable pageable){
-        return productService.getAllProductsByCategory(categoryNumber, pageable,brand,age,priceLow,priceHigh,desc);
+    public Page<Product> getAllProductsByCategory(@PathVariable Long categoryNumber,
+                                                  @RequestParam(required = false) Long age,
+                                                  @RequestParam(required = false) BigDecimal priceLow,
+                                                  @RequestParam(required = false) BigDecimal priceHigh,
+                                                    @RequestParam(required =false) List<String> brands
+                                                    ,Pageable pageable){
+        return productService.getAllProductsByCategory(categoryNumber, pageable,brands,age,priceLow,priceHigh);
     }
 
     @GetMapping("/id/{id}")
@@ -57,5 +61,10 @@ public class ProductController {
     @DeleteMapping("{id}}")
     public Product delete(@PathVariable Long id){
         return productService.delete(id);
+    }
+
+    @GetMapping("/brand/")
+    public Set<String> getAllBrands(@RequestParam Long categoryId){
+        return productService.getAllBrands(categoryId);
     }
 }

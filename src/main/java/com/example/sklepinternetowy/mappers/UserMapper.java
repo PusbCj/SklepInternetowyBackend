@@ -6,6 +6,7 @@ import com.example.sklepinternetowy.models.user.UserDtoRegister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -20,7 +21,7 @@ public class UserMapper {
         userApplication.setUsername(userDtoRegister.getUsername());
         userApplication.setEmail(userDtoRegister.getEmail());
         userApplication.setPassword(userDtoRegister.getPassword());
-        userApplication.setAddress(new HashSet<>());
+        userApplication.setAddress(new ArrayList<>());
         Address address = new Address();
         address.setCity(userDtoRegister.getCity());
         address.setHouseNumber(userDtoRegister.getHouseNumber());

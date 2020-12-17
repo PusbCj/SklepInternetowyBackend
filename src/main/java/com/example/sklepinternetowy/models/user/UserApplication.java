@@ -6,10 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -36,11 +33,12 @@ public class UserApplication implements UserDetails {
     private Long keyPassword;
     private Boolean activate;
     @OneToMany
-    private Set<Address> address;
+    private List<Address> address;
 
 
     public UserApplication() {
         roleList=new HashSet<>();
+        address = new ArrayList<>();
     }
 
     @Override
@@ -128,11 +126,11 @@ public class UserApplication implements UserDetails {
         this.lastName = lastName;
     }
 
-    public Set<Address> getAddress() {
+    public List<Address> getAddress() {
         return address;
     }
 
-    public void setAddress(Set<Address> address) {
+    public void setAddress(List<Address> address) {
         this.address = address;
     }
 

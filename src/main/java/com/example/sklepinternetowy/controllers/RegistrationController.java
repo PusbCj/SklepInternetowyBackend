@@ -41,20 +41,20 @@ public class RegistrationController {
     }
 
     @PostMapping("changeassword/")
-    public void changePasswordKey(@RequestBody String username, @RequestBody String password, @RequestBody Long key){
-        userService.changeForgottenPassword(username,password,key);
+    public void changePasswordKey(@RequestParam String username, @RequestBody String password, @RequestParam String key){
+        userService.changeForgottenPassword(username,password,Long.valueOf(key));
     }
 
     @ExceptionHandler(ActivationKeyIsInvalid.class)
     public ResponseEntity<ErrorMessage> activationKeyIsInvalidHandler(){
-        return new ResponseEntity<ErrorMessage>(new ErrorMessage("Klucz aktywacyjny nieprawidłowy"),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorMessage("Klucz aktywacyjny nieprawidłowy"),HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(EmailAlreadyExistInDatabaseException.class)
     public ResponseEntity<ErrorMessage> emailAlreadyExistInDatabaseExceptionHandler(){
-        return new ResponseEntity<ErrorMessage>(new ErrorMessage("Użytkownik o podanym adresie email jest już zarejstrowany"),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorMessage("Użytkownik o podanym adresie email jest już zarejstrowany"),HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(UsernameAlreadyExistInDatabaseException.class)
     public ResponseEntity<ErrorMessage> usernameAlreadyExistInDatabaseExceptionHandler(){
-        return new ResponseEntity<ErrorMessage>(new ErrorMessage("Użytkownik o podanym niku jest już zarejstrowany"),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorMessage("Użytkownik o podanym niku jest już zarejstrowany"),HttpStatus.BAD_REQUEST);
     }
 }

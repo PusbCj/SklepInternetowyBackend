@@ -4,12 +4,14 @@ import com.example.sklepinternetowy.exception.ProductNotFindException;
 import com.example.sklepinternetowy.models.Product;
 import com.example.sklepinternetowy.repositories.PhotoUrlRepository;
 import com.example.sklepinternetowy.repositories.ProductRepository;
-import com.google.common.base.Strings;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -46,18 +48,29 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product save(Product product) {
         photoUrlRepository.saveAll(product.getPhotoUrl());
+        product.setDisabled(false);
         return productRepository.save(product);
 
     }
 
-    @Override
-    public Page<Product> getAllProductsByCategory(Long categoryNumber, Pageable pageable, String brand, Long age, BigDecimal priceLow, BigDecimal priceHigh, Boolean desc) {
-       if(desc==null) desc=false;
 
-        if( !false )
-        return getProductsAsc(categoryNumber, pageable, brand, age, priceLow, priceHigh);
+
+    @Override
+    public Page<Product> getAllProductsByCategory(Long categoryNumber, Pageable pageable, List<String> brands, Long age, BigDecimal priceLow, BigDecimal priceHigh) {
+        if((brands==null || brands.size()==0) & age == null & priceLow ==null & priceHigh ==null){
+            return getAllProductsByCategory(categoryNumber, pageable);
+        }
+        if(age ==null) age =100L;
+        if(priceLow ==null) priceLow = BigDecimal.valueOf(0);
+        if (priceHigh ==null) priceHigh = BigDecimal.valueOf(10000);
+
+        if(brands==null || brands.size()==0)
+            return productRepository
+                    .findAllByCategory_IdAndAgeIsLessThanEqualAndPriceBetweenAndDisabledFalse(categoryNumber, age, priceLow, priceHigh, pageable);
         else
-            return getProductsDesc(categoryNumber, pageable, brand, age, priceLow, priceHigh);
+            return productRepository
+                    .findAllByCategory_IdAndAgeIsLessThanEqualAndPriceBetweenAndBrandInAndDisabledFalse(categoryNumber, age, priceLow, priceHigh, brands, pageable);
+
     }
 
     @Override
@@ -65,36 +78,10 @@ public class ProductServiceImpl implements ProductService{
         return productRepository.findById(id).orElseThrow(()->new ProductNotFindException("Nie odnaleziono produktu"));
     }
 
-    private Page<Product> getProductsAsc(Long categoryNumber, Pageable pageable, String brand, Long age, BigDecimal priceLow, BigDecimal priceHigh) {
-        if(Strings.isNullOrEmpty(brand) & age == null & priceLow ==null & priceHigh ==null){
-            return getAllProductsByCategory(categoryNumber, pageable);
-        }
-        if(age ==null) age =100L;
-        if(priceLow ==null) priceLow = BigDecimal.valueOf(0);
-        if (priceHigh ==null) priceHigh = BigDecimal.valueOf(10000);
-
-        if(Strings.isNullOrEmpty(brand))
-            return productRepository
-                    .findAllByCategory_IdAndAgeIsLessThanEqualAndPriceBetweenOrderByPriceAsc(categoryNumber, age, priceLow, priceHigh, pageable);
-        else
-            return productRepository
-                    .findAllByCategory_IdAndAgeIsLessThanEqualAndPriceBetweenAndBrandIsContainingOrderByPriceAsc(categoryNumber, age, priceLow, priceHigh, brand, pageable);
+    @Override
+    public Set<String> getAllBrands(Long categoryId) {
+        return productRepository.getBrandsbyCategory(categoryId);
     }
 
 
-    private Page<Product> getProductsDesc(Long categoryNumber, Pageable pageable, String brand, Long age, BigDecimal priceLow, BigDecimal priceHigh) {
-        if(Strings.isNullOrEmpty(brand) & age == null & priceLow ==null & priceHigh ==null){
-            return getAllProductsByCategoryDesc(categoryNumber, pageable);
-        }
-        if(age ==null) age =100l;
-        if(priceLow ==null) priceLow = BigDecimal.valueOf(0);
-        if (priceHigh ==null) priceHigh = BigDecimal.valueOf(10000);
-
-        if(Strings.isNullOrEmpty(brand))
-            return productRepository
-                    .findAllByCategory_IdAndAgeIsLessThanEqualAndPriceBetweenOrderByPriceDesc(categoryNumber, age, priceLow, priceHigh, pageable);
-        else
-            return productRepository
-                    .findAllByCategory_IdAndAgeIsLessThanEqualAndPriceBetweenAndBrandIsContainingOrderByPriceDesc(categoryNumber, age, priceLow, priceHigh, brand, pageable);
-    }
 }

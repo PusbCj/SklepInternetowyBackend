@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 
 public interface ProductService {
@@ -19,7 +21,10 @@ public interface ProductService {
 
 
 
-    Page<Product> getAllProductsByCategory(Long categoryNumber, Pageable pageable, String brand, Long age, BigDecimal priceLow, BigDecimal priceHigh, Boolean desc);
+    Page<Product> getAllProductsByCategory(Long categoryNumber, Pageable pageable, List<String> brands, Long age, BigDecimal priceLow, BigDecimal priceHigh);
 
     Product getById(Long id);
+
+
+    Set<String> getAllBrands(Long categoryId);
 }

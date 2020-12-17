@@ -17,7 +17,7 @@ public class Product {
     @ManyToOne
     private Category category;
 
-    @Length(max=300)
+    @Length(max=5000)
     private String description;
     @OneToMany
     private List<PhotoUrl> photoUrl;
@@ -25,6 +25,7 @@ public class Product {
     private Long quantityAvailable;
     private String brand;
     private Long age;
+    private Boolean disabled;
 
     private BigDecimal price;
     public Product() {
@@ -111,5 +112,13 @@ public class Product {
 
     public List<PhotoUrl> getPhotoUrl() {
         return photoUrl;
+    }
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 }

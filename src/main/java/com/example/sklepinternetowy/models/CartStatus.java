@@ -1,4 +1,5 @@
 package com.example.sklepinternetowy.models;
 
-public class Order {
+public enum CartStatus {
+    START,CLOSE;
 }

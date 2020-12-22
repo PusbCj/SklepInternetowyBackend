@@ -24,7 +24,8 @@ public class Product {
     private Long quantity;
     private Long quantityAvailable;
     private String brand;
-    private Long age;
+    @ManyToMany
+    private List<ProductCategoryAge> productCategoryAgeList;
     private Boolean disabled;
 
     private BigDecimal price;
@@ -98,13 +99,6 @@ public class Product {
         this.brand = brand;
     }
 
-    public Long getAge() {
-        return age;
-    }
-
-    public void setAge(Long age) {
-        this.age = age;
-    }
 
     public void setPhotoUrl(List<PhotoUrl> photoUrl) {
         this.photoUrl = photoUrl;

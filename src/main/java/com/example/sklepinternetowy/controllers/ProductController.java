@@ -1,6 +1,7 @@
 package com.example.sklepinternetowy.controllers;
 
 import com.example.sklepinternetowy.models.Product;
+import com.example.sklepinternetowy.models.ProductCategoryAge;
 import com.example.sklepinternetowy.services.FileService;
 import com.example.sklepinternetowy.services.ProductService;
 import org.springframework.data.domain.Page;
@@ -37,12 +38,13 @@ public class ProductController {
     @PreAuthorize("permitAll()")
     @GetMapping("/category/{categoryNumber}")
     public Page<Product> getAllProductsByCategory(@PathVariable Long categoryNumber,
-                                                  @RequestParam(required = false) Long age,
+                                                  @RequestParam(required = false) List<ProductCategoryAge> ages,
                                                   @RequestParam(required = false) BigDecimal priceLow,
                                                   @RequestParam(required = false) BigDecimal priceHigh,
                                                     @RequestParam(required =false) List<String> brands
                                                     ,Pageable pageable){
-        return productService.getAllProductsByCategory(categoryNumber, pageable,brands,age,priceLow,priceHigh);
+        return productService.getAllProductsByCategory(categoryNumber, pageable, brands, ages, priceLow, priceHigh);
+
     }
 
     @GetMapping("/id/{id}")
@@ -66,5 +68,10 @@ public class ProductController {
     @GetMapping("/brand/")
     public Set<String> getAllBrands(@RequestParam Long categoryId){
         return productService.getAllBrands(categoryId);
+    }
+
+    @GetMapping("/agecat/")
+    public Set<ProductCategoryAge> getAllProductCategoryAge(){
+        return productService.getAlProductCategoryAge();
     }
 }

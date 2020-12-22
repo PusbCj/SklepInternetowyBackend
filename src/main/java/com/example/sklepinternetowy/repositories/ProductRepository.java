@@ -1,6 +1,7 @@
 package com.example.sklepinternetowy.repositories;
 
 import com.example.sklepinternetowy.models.Product;
+import com.example.sklepinternetowy.models.ProductCategoryAge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,11 +19,9 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     Page<Product> findAllByCategory_IdOrderByPriceAsc(Long category_id, Pageable pageable);
     Page<Product> findAllByCategory_IdOrderByPriceDesc(Long category_id, Pageable pageable);
 
-    Page<Product> findAllByCategory_IdAndAgeIsLessThanEqualAndPriceBetweenAndDisabledFalse(Long category_id,
-                                                                           Long age, BigDecimal price, BigDecimal price2, Pageable pageable);
+    Page<Product> findDistinctByCategory_IdAndProductCategoryAgeListInAndPriceBetweenAndDisabledFalse(Long category_id,
+                                                                                                 List<ProductCategoryAge> age, BigDecimal price, BigDecimal price2, Pageable pageable);
 
-    Page<Product> findAllByCategory_IdAndAgeIsLessThanEqualAndPriceBetweenAndBrandInAndDisabledFalse(Long category_id,
-                                                                                                                Long age, BigDecimal price, BigDecimal price2,List<String> brands, Pageable pageable);
 
     @Query("SELECT DISTINCT u.brand FROM Product u WHERE u.category.id = ?1")
     Set<String> getBrandsbyCategory(Long categoryId);
@@ -30,7 +29,10 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query("SELECT DISTINCT u.brand FROM Product u WHERE u.disabled = false AND u.category.id = ?1")
     Set<String> getBrandsEnabledByCategory(Long categoryId);
 
-    Page<Product> findProductsByBrandIn(Collection<String> brand, Pageable pageable);
+
+    Page<Product> findDistinctByCategory_IdAndProductCategoryAgeListInAndPriceBetweenAndDisabledIsFalseAndBrandIsIn(Long category_id, List<ProductCategoryAge> age, BigDecimal price, BigDecimal price2, Collection<String> brand, Pageable pageable);
+
+
 
 
 }

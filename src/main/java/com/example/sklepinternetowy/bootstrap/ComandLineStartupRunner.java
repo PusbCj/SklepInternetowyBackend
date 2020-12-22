@@ -2,10 +2,12 @@ package com.example.sklepinternetowy.bootstrap;
 
 import com.example.sklepinternetowy.models.Address;
 import com.example.sklepinternetowy.models.Category;
+import com.example.sklepinternetowy.models.ProductCategoryAge;
 import com.example.sklepinternetowy.models.user.Role;
 import com.example.sklepinternetowy.models.user.UserApplication;
 import com.example.sklepinternetowy.repositories.AddressRepository;
 import com.example.sklepinternetowy.repositories.CategoryRepository;
+import com.example.sklepinternetowy.repositories.ProductCategoryAgeRepository;
 import com.example.sklepinternetowy.repositories.ProductRepository;
 import com.example.sklepinternetowy.repositories.user.RoleRepository;
 import com.example.sklepinternetowy.repositories.user.UserApplicationRepository;
@@ -24,13 +26,15 @@ public class ComandLineStartupRunner implements CommandLineRunner {
     private final ProductRepository productRepository;
     private final UserApplicationRepository userRepo;
     private final AddressRepository addressRepository;
+    private final ProductCategoryAgeRepository productCategoryAgeRepository;
 
-    public ComandLineStartupRunner(RoleRepository roleRepository, CategoryRepository categoryRepository, ProductRepository productRepository, UserApplicationRepository userRepo, AddressRepository addressRepository) {
+    public ComandLineStartupRunner(RoleRepository roleRepository, CategoryRepository categoryRepository, ProductRepository productRepository, UserApplicationRepository userRepo, AddressRepository addressRepository, ProductCategoryAgeRepository productCategoryAgeRepository) {
         this.roleRepository = roleRepository;
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.userRepo = userRepo;
         this.addressRepository = addressRepository;
+        this.productCategoryAgeRepository = productCategoryAgeRepository;
     }
 
     @Override
@@ -76,6 +80,18 @@ public class ComandLineStartupRunner implements CommandLineRunner {
             categoryRepository.save(category5);
             categoryRepository.save(category6);
 
+        }
+
+        if(productCategoryAgeRepository.count()<1){
+            productCategoryAgeRepository.save(new ProductCategoryAge("0-3m"));
+            productCategoryAgeRepository.save(new ProductCategoryAge("3-6m"));
+            productCategoryAgeRepository.save(new ProductCategoryAge("6-12m"));
+            productCategoryAgeRepository.save(new ProductCategoryAge("1-3"));
+            productCategoryAgeRepository.save(new ProductCategoryAge("4-5"));
+            productCategoryAgeRepository.save(new ProductCategoryAge("6-8"));
+            productCategoryAgeRepository.save(new ProductCategoryAge("8-10"));
+            productCategoryAgeRepository.save(new ProductCategoryAge("10-12"));
+            productCategoryAgeRepository.save(new ProductCategoryAge("12+"));
         }
         Files.createDirectories(Paths.get("./photo"));
 

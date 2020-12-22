@@ -6,7 +6,7 @@ import com.example.sklepinternetowy.models.ShopCart;
 import com.example.sklepinternetowy.models.user.UserApplication;
 import com.example.sklepinternetowy.repositories.ItemShopCartRepository;
 import com.example.sklepinternetowy.repositories.ShopCartRepository;
-import org.jetbrains.annotations.NotNull;
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -106,7 +106,7 @@ public class ShopCartServiceImpl implements ShopCartService{
         return addProductNotDublicate(itemShopCart, shopCart);
     }
 
-    @NotNull
+
     private ShopCart addProductNotDublicate(ItemShopCart itemShopCart, ShopCart shopCart) {
         Optional<ItemShopCart> itemShopCartOptional = shopCart.getItemShopCartList()
                 .stream()

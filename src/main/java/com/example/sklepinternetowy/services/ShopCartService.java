@@ -18,4 +18,6 @@ public interface ShopCartService {
     ShopCart updateCartById(ShopCart shopCart);
 
     ShopCart addProductToCartId(ItemShopCart itemShopCart, Long id);
+
+    ShopCart addShopCartToExistingOne(Long id);
 }

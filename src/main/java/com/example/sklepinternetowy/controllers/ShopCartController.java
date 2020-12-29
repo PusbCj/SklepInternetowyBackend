@@ -22,6 +22,7 @@ public class ShopCartController {
         this.shopCartService = shopCartService;
     }
 
+    @PreAuthorize("hasAuthority('User')")
     @GetMapping
     public ResponseEntity<ShopCart> getCurrentCart(){
         Optional<ShopCart> currentCart = shopCartService.getCurrentCart();
@@ -32,14 +33,21 @@ public class ShopCartController {
         return new ResponseEntity<>(currentCart.get(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('User')")
     @PutMapping
     public ShopCart updateCart(@RequestBody ShopCart shopCart){
         return shopCartService.updateCart(shopCart);
     }
 
+    @PreAuthorize("hasAuthority('User')")
     @PostMapping("addproduct")
     public ShopCart addProduct(@RequestBody ItemShopCart itemShopCart){
         return shopCartService.addProduct(itemShopCart);
+    }
+    @PreAuthorize("hasAuthority('User')")
+    @PostMapping("addshopcart/{id}")
+    public ShopCart addShopCarttoRegisterUser(@PathVariable Long id){
+        return shopCartService.addShopCartToExistingOne(id);
     }
 
     @GetMapping("anon/{id}")

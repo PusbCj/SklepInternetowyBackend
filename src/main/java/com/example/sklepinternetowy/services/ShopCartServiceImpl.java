@@ -106,6 +106,23 @@ public class ShopCartServiceImpl implements ShopCartService{
         return addProductNotDublicate(itemShopCart, shopCart);
     }
 
+    @Override
+    public ShopCart addShopCartToExistingOne(Long id) {
+        ShopCart currentCart = getCurrentOpenCartOrCreateNew();
+        if (shopCartRepository.findById(id).isPresent()) {
+            ShopCart shopCartNotRegisterUser = shopCartRepository.findById(id).get();
+            shopCartNotRegisterUser.getItemShopCartList()
+                    .forEach(x-> currentCart.getItemShopCartList()
+                            .add(itemShopCartRepository.save(new ItemShopCart(x.getProduct(),x.getQuantity()))));
+
+            shopCartNotRegisterUser.setCartStatus(CartStatus.CLOSE);
+            shopCartRepository.save(shopCartNotRegisterUser);
+           return shopCartRepository.save(currentCart);
+        }
+
+        return currentCart;
+    }
+
 
     private ShopCart addProductNotDublicate(ItemShopCart itemShopCart, ShopCart shopCart) {
         Optional<ItemShopCart> itemShopCartOptional = shopCart.getItemShopCartList()

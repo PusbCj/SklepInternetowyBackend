@@ -16,6 +16,11 @@ public class ItemShopCart {
     public ItemShopCart() {
     }
 
+    public ItemShopCart(Product product, Integer quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
+
     public Long getId() {
         return id;
     }

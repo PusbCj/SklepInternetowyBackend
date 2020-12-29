@@ -5,7 +5,6 @@ import com.example.sklepinternetowy.exception.EmailAlreadyExistInDatabaseExcepti
 import com.example.sklepinternetowy.exception.UsernameAlreadyExistInDatabaseException;
 import com.example.sklepinternetowy.models.ErrorMessage;
 import com.example.sklepinternetowy.models.user.UserDtoRegister;
-import com.example.sklepinternetowy.models.user.UsernameAndPassword;
 import com.example.sklepinternetowy.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

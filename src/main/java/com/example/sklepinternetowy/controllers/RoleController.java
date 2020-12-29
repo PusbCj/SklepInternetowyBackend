@@ -5,6 +5,7 @@ import com.example.sklepinternetowy.models.user.Role;
 import com.example.sklepinternetowy.services.RoleService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,11 +26,14 @@ public class RoleController {
     public Role getByid(@PathVariable Long id){
         return roleService.getById(id);
     }
+
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping
     public Role save(@RequestBody Role role){
         return roleService.save(role);
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping({"{id}"})
     public Role delete(@PathVariable Long id){
         return roleService.delete(id);

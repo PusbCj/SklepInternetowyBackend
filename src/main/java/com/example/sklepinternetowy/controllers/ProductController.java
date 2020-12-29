@@ -54,12 +54,19 @@ public class ProductController {
 
 
 
-
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping
     public Product save( @RequestBody Product product){
         return productService.save(product);
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
+    @PutMapping
+    public Product update( @RequestBody Product product){
+        return productService.update(product);
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping("{id}}")
     public Product delete(@PathVariable Long id){
         return productService.delete(id);

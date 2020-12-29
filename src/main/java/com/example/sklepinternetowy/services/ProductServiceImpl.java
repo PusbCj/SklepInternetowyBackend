@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product save(Product product) {
         photoUrlRepository.saveAll(product.getPhotoUrl());
-        product.setDisabled(false);
+        product.setId(null);
         return productRepository.save(product);
 
     }
@@ -92,6 +92,12 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Set<ProductCategoryAge> getAlProductCategoryAge() {
         return new HashSet<>( productCategoryAgeRepository.findAll());
+    }
+
+    @Override
+    public Product update(Product product) {
+        photoUrlRepository.saveAll(product.getPhotoUrl());
+        return productRepository.save(product);
     }
 
 

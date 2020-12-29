@@ -29,19 +29,17 @@ public class CategoryController {
     @GetMapping("{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id){
         Optional<Category> optionalCategory = categoryRepository.findById(id);
-        if(optionalCategory.isPresent())
-            return new ResponseEntity<>(optionalCategory.get(), HttpStatus.OK);
-            else
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return optionalCategory.map(category -> new ResponseEntity<>(category, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping
     public Category save(@RequestBody Category category){
         return categoryRepository.save(category);
     }
 
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id){
         categoryRepository.deleteById(id);

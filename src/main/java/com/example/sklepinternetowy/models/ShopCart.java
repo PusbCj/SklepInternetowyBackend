@@ -19,7 +19,6 @@ public class ShopCart {
     @CreatedDate
     private Date dateOfCreation;
 
-    private String userNameAnonim;
 
     @OneToMany
     private List<ItemShopCart> itemShopCartList;
@@ -76,11 +75,10 @@ public class ShopCart {
         this.userApplication = userApplication;
     }
 
-    public String getUserNameAnonim() {
-        return userNameAnonim;
+    @PrePersist
+    public void onPrePersist(){
+        setDateOfCreation(new Date());
     }
 
-    public void setUserNameAnonim(String userNameAnonim) {
-        this.userNameAnonim = userNameAnonim;
-    }
+
 }

@@ -33,27 +33,28 @@ public class UserController {
     public void changeUserdate(@RequestBody ChangeYourData changeYourData){
         userService.changeYourdate(changeYourData);
     }
+
     @GetMapping("/getuserdate")
     public ChangeYourData getUserData(){
        return userService.getUserData();
     }
 
-    //@PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping
     public Page<UserApplication> getAll(Pageable pageable){
 
         return userApplicationRepository.findAll(pageable);
     }
 
-    //@PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("{id}")
-    public ResponseEntity<UserApplication> getById(@PathVariable Long id,Pageable pageable){
+    public ResponseEntity<UserApplication> getById(@PathVariable Long id){
         var optionalUser = userApplicationRepository.findById(id);
         return optionalUser.map(userApplication -> new ResponseEntity<>(userApplication, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    //@PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping("{id}")
     public void deleteUserById(@PathVariable Long id){
         userApplicationRepository.deleteById(id);

@@ -18,6 +18,7 @@ public class Product {
     private Category category;
 
     @Length(max=5000)
+    @Column(length = 5000)
     private String description;
     @OneToMany
     private List<PhotoUrl> photoUrl;
@@ -114,5 +115,13 @@ public class Product {
 
     public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
+    }
+
+    public List<ProductCategoryAge> getProductCategoryAgeList() {
+        return productCategoryAgeList;
+    }
+
+    public void setProductCategoryAgeList(List<ProductCategoryAge> productCategoryAgeList) {
+        this.productCategoryAgeList = productCategoryAgeList;
     }
 }

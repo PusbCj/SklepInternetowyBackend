@@ -33,7 +33,7 @@ public class FileController {
         this.fileService = fileService;
     }
 
-
+    @PreAuthorize("hasAuthority('Admin')")
     @RequestMapping(value="api/v1/api/file/", method= RequestMethod.POST,
             consumes= {"multipart/form-data"})
     public ResponseEntity<String> save( @RequestPart("file") MultipartFile file){

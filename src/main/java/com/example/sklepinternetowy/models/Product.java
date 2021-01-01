@@ -32,6 +32,7 @@ public class Product {
     private BigDecimal price;
     public Product() {
         photoUrl= new ArrayList<>();
+
     }
 
     public Long getId() {

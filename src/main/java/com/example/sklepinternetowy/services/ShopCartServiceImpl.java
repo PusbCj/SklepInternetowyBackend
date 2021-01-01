@@ -7,6 +7,8 @@ import com.example.sklepinternetowy.models.user.UserApplication;
 import com.example.sklepinternetowy.repositories.ItemShopCartRepository;
 import com.example.sklepinternetowy.repositories.ShopCartRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +19,7 @@ public class ShopCartServiceImpl implements ShopCartService{
     private final UserService userService;
     private final ShopCartRepository shopCartRepository;
     private final ItemShopCartRepository itemShopCartRepository;
+    private Logger logger = LoggerFactory.getLogger(ShopCartServiceImpl.class);
 
     public ShopCartServiceImpl(UserService userService,
                                ShopCartRepository shopCartRepository, ItemShopCartRepository itemShopCartRepository) {

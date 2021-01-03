@@ -1,6 +1,9 @@
 package com.example.sklepinternetowy.services;
 
+import com.example.sklepinternetowy.exception.OrderNotFoundException;
+import com.example.sklepinternetowy.models.OrderStatus;
 import com.example.sklepinternetowy.models.Orderr;
+import com.example.sklepinternetowy.models.ShopCart;
 import com.example.sklepinternetowy.models.user.UserApplication;
 import com.example.sklepinternetowy.repositories.OrderRepository;
 import org.springframework.data.domain.Page;
@@ -15,22 +18,44 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final UserService userService;
+    private final ShopCartService shopCartService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserService userService) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, ShopCartService shopCartService) {
         this.orderRepository = orderRepository;
         this.userService = userService;
+        this.shopCartService = shopCartService;
     }
 
     @Override
     public Orderr getCurrentOrder() {
         UserApplication userApplication = userService.getUserObjectLogged();
-
-        return null;
+        Optional<Orderr> optionalOrderr = orderRepository
+                .findFirstByUserIdAndOrderStatus(userApplication.getId(), OrderStatus.CREATE);
+        if (optionalOrderr.isPresent()) {
+            return optionalOrderr.get();
+        } else {
+            Orderr order = new Orderr();
+            Optional<ShopCart> currentCart = shopCartService.getCurrentCart();
+            if (currentCart.isPresent())
+                order.setShopCart(currentCart.get());
+            order.setUser(userApplication);
+            order.setAddress(userApplication.getAddress().get(0));
+            return orderRepository.save(order);
+        }
     }
 
     @Override
     public Orderr getCurrentOrderById(Long id) {
-        return null;
+        Orderr order = orderRepository
+                .findById(id).orElseThrow(() -> new OrderNotFoundException("Koszyk nie odnaaleziony"));
+        if (order.getUser() != null && order.getUser() != userService.getUserObjectLogged()) {
+            throw new OrderNotFoundException("Koszyk nalezy do innego użytkownika");
+        }else {
+
+            return order;
+        }
+
+
     }
 
     @Override
@@ -40,12 +65,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Orderr save(Orderr order) {
-        return null;
+        order.setId(0L); //Make sure that Order is not update;
+        return orderRepository.save(order);
     }
 
     @Override
     public Orderr update(Orderr order, Long id) {
-        return null;
+        getCurrentOrderById(id);
+        return orderRepository.save(order);
     }
 
     @Override

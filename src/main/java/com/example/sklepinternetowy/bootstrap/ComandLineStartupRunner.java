@@ -58,7 +58,13 @@ public class ComandLineStartupRunner implements CommandLineRunner {
             user.setActivate(true);
             userRepo.save(user);
 
+        }else if(userRepo.findByUsername("robertcj92").get().getAddress().size() == 0){
+
+            UserApplication robertcj92 = userRepo.findByUsername("robertcj92").get();
+            robertcj92.getAddress().add(addressRepository.save(new Address()));
+            userRepo.save(robertcj92);
         }
+
 
         if(categoryRepository.count() <4L){
             Category category1= new Category();

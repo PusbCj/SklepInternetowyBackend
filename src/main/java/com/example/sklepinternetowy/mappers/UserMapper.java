@@ -23,6 +23,7 @@ public class UserMapper {
         userApplication.setPassword(userDtoRegister.getPassword());
         userApplication.setAddress(new ArrayList<>());
         Address address = new Address();
+        address.setName(userDtoRegister.getFirstName() + " " + userDtoRegister.getLastName());
         address.setCity(userDtoRegister.getCity());
         address.setHouseNumber(userDtoRegister.getHouseNumber());
         address.setName(userDtoRegister.getNameAddress());

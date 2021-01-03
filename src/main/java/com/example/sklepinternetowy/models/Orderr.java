@@ -1,6 +1,7 @@
 package com.example.sklepinternetowy.models;
 
 import com.example.sklepinternetowy.models.user.UserApplication;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,6 +16,7 @@ public class Orderr {
     @OneToOne
     private ShopCart shopCart;
 
+    @JsonIgnore
     @ManyToOne
     private UserApplication user;
 
@@ -22,6 +24,8 @@ public class Orderr {
     private Address address;
 
     private OrderStatus orderStatus;
+
+    private DeliveryType deliveryType;
 
     public Orderr() {
     }
@@ -64,6 +68,22 @@ public class Orderr {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @PrePersist

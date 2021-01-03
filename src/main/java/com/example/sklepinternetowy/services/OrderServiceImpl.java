@@ -40,6 +40,8 @@ public class OrderServiceImpl implements OrderService {
                 order.setShopCart(currentCart.get());
             order.setUser(userApplication);
             order.setAddress(userApplication.getAddress().get(0));
+            order.getAddress().setName(userApplication.getFirstName() + " " + userApplication.getLastName());
+            order.setOrderStatus(OrderStatus.CREATE);
             return orderRepository.save(order);
         }
     }

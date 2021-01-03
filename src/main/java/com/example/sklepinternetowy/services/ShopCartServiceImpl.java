@@ -116,8 +116,7 @@ public class ShopCartServiceImpl implements ShopCartService {
         if (shopCartRepository.findById(id).isPresent()) {
             ShopCart shopCartNotRegisterUser = shopCartRepository.findById(id).get();
             shopCartNotRegisterUser.getItemShopCartList()
-                    .forEach(x -> currentCart.getItemShopCartList()
-                            .add(itemShopCartRepository.save(new ItemShopCart(x.getProduct(), x.getQuantity()))));
+                    .forEach(x -> addProductNotDublicate(new ItemShopCart(x.getProduct(), x.getQuantity()),currentCart));
 
             shopCartNotRegisterUser.setCartStatus(CartStatus.CLOSE);
             shopCartRepository.save(shopCartNotRegisterUser);

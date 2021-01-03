@@ -30,7 +30,7 @@ public class Product {
     private Boolean disabled;
 
     private BigDecimal price;
-    public Product() {
+     public Product() {
         photoUrl= new ArrayList<>();
 
     }

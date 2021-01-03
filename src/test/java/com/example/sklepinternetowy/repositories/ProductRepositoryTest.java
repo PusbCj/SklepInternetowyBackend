@@ -42,11 +42,11 @@ class ProductRepositoryTest {
 
         Product product1 = new Product();
         product1.setBrand("abc");
-        product1.setQuantity(8l);
+        product1.setQuantity(8L);
         product1.setDescription("testdesc");
         product1.setDisabled(false);
         product1.setName("kndf");
-        product1.setQuantityAvailable(2l);
+        product1.setQuantityAvailable(2L);
         product1.setCategory(category);
         product1.setPrice(BigDecimal.valueOf(234));
         product1.setProductCategoryAgeList(new ArrayList<>());
@@ -54,11 +54,11 @@ class ProductRepositoryTest {
 
         Product product2 = new Product();
         product2.setBrand("abc");
-        product2.setQuantity(8l);
+        product2.setQuantity(8L);
         product2.setDescription("testdesc");
         product2.setDisabled(false);
         product2.setName("jfdf");
-        product2.setQuantityAvailable(3l);
+        product2.setQuantityAvailable(3L);
         product2.setCategory(category);
         product2.setPrice(BigDecimal.valueOf(211));
         product2.setProductCategoryAgeList(new ArrayList<>());
@@ -66,11 +66,11 @@ class ProductRepositoryTest {
 
         Product product3 = new Product();
         product3.setBrand("bcd");
-        product3.setQuantity(9l);
+        product3.setQuantity(9L);
         product3.setDescription("testdesc");
         product3.setDisabled(false);
         product3.setName("fdgdg");
-        product3.setQuantityAvailable(3l);
+        product3.setQuantityAvailable(3L);
         product3.setCategory(category);
         product3.setPrice(BigDecimal.valueOf(111));
         product3.setProductCategoryAgeList(new ArrayList<>());
@@ -93,11 +93,11 @@ class ProductRepositoryTest {
         //given
         Product product = new Product();
         product.setBrand("testowy");
-        product.setQuantity(3l);
+        product.setQuantity(3L);
         product.setDescription("testdesc");
         product.setDisabled(false);
         product.setName("fdgdg");
-        product.setQuantityAvailable(2l);
+        product.setQuantityAvailable(2L);
 
         //when
         Product product2 = underTestRepository.save(product);
@@ -168,7 +168,10 @@ class ProductRepositoryTest {
                                 , PageRequest.of(0, 30))
                 .getContent();
         //then
-        assertThat(products).isNotNull().hasSize(3).doesNotContain(productDisabled).doesNotContain(prod5).doesNotContain(prod6);
+        assertThat(products).isNotNull().hasSize(3)
+                .doesNotContain(productDisabled)
+                .doesNotContain(prod5)
+                .doesNotContain(prod6);
         //after
         underTestRepository.delete(productDisabled);
         underTestRepository.delete(prod5);

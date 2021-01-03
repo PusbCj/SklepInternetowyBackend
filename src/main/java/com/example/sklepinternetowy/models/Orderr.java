@@ -1,26 +1,27 @@
 package com.example.sklepinternetowy.models;
 
 import com.example.sklepinternetowy.models.user.UserApplication;
-import org.apache.catalina.User;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Orderr {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @CreatedDate
+
     private Date createDate;
     @OneToOne
     private ShopCart shopCart;
 
     @ManyToOne
     private UserApplication user;
+
+    @ManyToOne
+    private Address address;
+
+    private OrderStatus orderStatus;
 
     public Orderr() {
     }
@@ -57,10 +58,18 @@ public class Orderr {
         this.user = user;
     }
 
-    //    @PrePersist
-//    private void prePersist(){
-//        if(createDate==null){
-//            createDate = new Date();
-//        }
-//    }
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        if (createDate == null) {
+            createDate = new Date();
+        }
+    }
 }

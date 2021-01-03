@@ -25,6 +25,7 @@ public class ShopCart {
 
     private CartStatus cartStatus;
 
+
     @JsonIgnore
     @ManyToOne
     private UserApplication userApplication;

@@ -7,6 +7,8 @@ import com.example.sklepinternetowy.repositories.PhotoUrlRepository;
 import com.example.sklepinternetowy.repositories.ProductCategoryAgeRepository;
 import com.example.sklepinternetowy.repositories.ProductRepository;
 
+import io.swagger.annotations.Scope;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

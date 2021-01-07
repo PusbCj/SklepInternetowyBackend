@@ -30,4 +30,8 @@ public interface OrderService {
 
 
     Orderr getOrderNotLoggedUserBy(Long id);
+
+    Orderr update(Orderr order);
+
+    Orderr getById(Long id);
 }

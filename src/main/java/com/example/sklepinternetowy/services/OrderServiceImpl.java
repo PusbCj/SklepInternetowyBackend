@@ -149,4 +149,17 @@ public class OrderServiceImpl implements OrderService {
         Orderr orderr = checkIfexistAndIfHasNotUser(id);
         return orderr;
     }
+
+    @Override
+    public Orderr update(Orderr order) {
+        orderRepository
+                .findById(order.getId())
+                .orElseThrow(()-> new OrderNotFoundException("Nie ma takiego koszyka"));
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public Orderr getById(Long id) {
+        return orderRepository.findById(id).orElseThrow(()-> new OrderNotFoundException("Brak koszyka"));
+    }
 }

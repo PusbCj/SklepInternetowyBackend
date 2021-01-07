@@ -23,6 +23,7 @@ public class OrderController {
         return orderService.getCurrentOrder();
     }
 
+    @PreAuthorize("hasAuthority('User')")
     @GetMapping("{id}")
     public Orderr getCurrentOrderById(@PathVariable Long id) {
         return orderService.getCurrentOrderById(id);
@@ -52,24 +53,42 @@ public class OrderController {
         orderService.finaliseOrder(id);
     }
 
-    @PreAuthorize("hasAuthority('Admin')")
-    @GetMapping
-    public Page<Orderr> getAllOrders(Pageable pageable) {
-        return orderService.getAllOrders(pageable);
-    }
 
-    @PostMapping
-    public Orderr save(@RequestBody Orderr order) {
-        return orderService.save(order);
-    }
+
 
     @PatchMapping("{id}")
     public Orderr update(@RequestBody Orderr order, @PathVariable Long id) {
         return orderService.update(order, id);
     }
 
+
+    //admin
+
     @PreAuthorize("hasAuthority('Admin')")
-    @DeleteMapping("{id}")
+    @PostMapping("admin/")
+    public Orderr save(@RequestBody Orderr order) {
+        return orderService.save(order);
+    }
+    @PreAuthorize("hasAuthority('Admin')")
+    @PatchMapping("admin/")
+    public Orderr update(@RequestBody Orderr order) {
+        return orderService.update(order);
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("admin/")
+    public Page<Orderr> getAllOrders(Pageable pageable) {
+        return orderService.getAllOrders(pageable);
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("admin/{id}")
+    public Orderr getById(@PathVariable Long id) {
+        return orderService.getById(id);
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @DeleteMapping("admin/{id}")
     public void delete(@PathVariable Long id) {
          orderService.delete(id);
     }

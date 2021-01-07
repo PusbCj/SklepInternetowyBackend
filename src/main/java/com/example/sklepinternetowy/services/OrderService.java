@@ -34,4 +34,6 @@ public interface OrderService {
     Orderr update(Orderr order);
 
     Orderr getById(Long id);
+
+    Page<Orderr> getAllOrdersByUser(Pageable pageable);
 }

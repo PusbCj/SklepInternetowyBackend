@@ -162,4 +162,9 @@ public class OrderServiceImpl implements OrderService {
     public Orderr getById(Long id) {
         return orderRepository.findById(id).orElseThrow(()-> new OrderNotFoundException("Brak koszyka"));
     }
+
+    @Override
+    public Page<Orderr> getAllOrdersByUser(Pageable pageable) {
+        return null;
+    }
 }

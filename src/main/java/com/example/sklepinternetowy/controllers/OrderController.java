@@ -24,6 +24,12 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAuthority('User')")
+    @GetMapping("admin/")
+    public Page<Orderr> getAllOrdersByUser(Pageable pageable) {
+        return orderService.getAllOrdersByUser(pageable);
+    }
+
+    @PreAuthorize("hasAuthority('User')")
     @GetMapping("{id}")
     public Orderr getCurrentOrderById(@PathVariable Long id) {
         return orderService.getCurrentOrderById(id);

@@ -88,7 +88,11 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Set<String> getAllBrands(Long categoryId) {
-        return productRepository.getBrandsbyCategory(categoryId);
+        if(categoryId == null){
+            return getAllBrands();
+        }else {
+            return productRepository.getBrandsbyCategory(categoryId);
+        }
     }
 
     @Override
@@ -100,6 +104,11 @@ public class ProductServiceImpl implements ProductService{
     public Product update(Product product) {
         photoUrlRepository.saveAll(product.getPhotoUrl());
         return productRepository.save(product);
+    }
+
+    @Override
+    public Set<String> getAllBrands() {
+        return productRepository.getAllBrands();
     }
 
 

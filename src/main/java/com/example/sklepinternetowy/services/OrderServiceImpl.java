@@ -1,15 +1,15 @@
 package com.example.sklepinternetowy.services;
 
 import com.example.sklepinternetowy.exception.OrderNotFoundException;
-import com.example.sklepinternetowy.models.OrderStatus;
-import com.example.sklepinternetowy.models.Orderr;
-import com.example.sklepinternetowy.models.ShopCart;
+import com.example.sklepinternetowy.models.*;
 import com.example.sklepinternetowy.models.user.UserApplication;
+import com.example.sklepinternetowy.repositories.AddressRepository;
 import com.example.sklepinternetowy.repositories.OrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -19,11 +19,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserService userService;
     private final ShopCartService shopCartService;
+    private final AddressRepository addressRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, ShopCartService shopCartService) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, ShopCartService shopCartService, AddressRepository addressRepository) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.shopCartService = shopCartService;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -35,9 +37,9 @@ public class OrderServiceImpl implements OrderService {
             return optionalOrderr.get();
         } else {
             Orderr order = new Orderr();
-            Optional<ShopCart> currentCart = shopCartService.getCurrentCart();
-            if (currentCart.isPresent())
-                order.setShopCart(currentCart.get());
+            ShopCart currentCart = shopCartService.getCurrentOpenCartOrCreateNew();
+
+            order.setShopCart(currentCart);
             order.setUser(userApplication);
             order.setAddress(userApplication.getAddress().get(0));
             order.getAddress().setName(userApplication.getFirstName() + " " + userApplication.getLastName());
@@ -74,11 +76,77 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Orderr update(Orderr order, Long id) {
         getCurrentOrderById(id);
+        order.setUser(userService.getUserObjectLogged());
         return orderRepository.save(order);
     }
 
     @Override
     public void delete(Long id) {
         orderRepository.deleteById(id);
+    }
+
+    @Transactional
+    @Override
+    public void finaliseOrder(Long id) {
+        Orderr order = orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Nie odnalezione zamówienie"));
+        if(!order.getUser().equals(userService.getUserObjectLogged())){
+            throw new OrderNotFoundException("Zamówienie o podanym id nie nalezy do tego użytkownika");
+        }
+
+        //wyslanie maila itp
+
+        order.setOrderStatus(OrderStatus.CLOSE);
+        order.getShopCart().setCartStatus(CartStatus.CLOSE);
+    }
+
+    @Transactional
+    @Override
+    public Orderr getNewOrderNotLoggedUser(Long cartid) {
+        ShopCart cart = shopCartService.getCartById(cartid);
+        if(cart.getUserApplication() != null){
+            throw new RuntimeException("Cart id niepoprawne");
+        }
+        Orderr orderr = new Orderr();
+        orderr.setOrderStatus(OrderStatus.CREATE);
+        orderr.setShopCart(cart);
+        orderr.setAddress(addressRepository.save(new Address()));
+
+        return orderRepository.save(orderr);
+    }
+
+
+    @Override
+    public Orderr updateOrderNotLoggedUser(Orderr order) {
+
+        checkIfexistAndIfHasNotUser(order.getId());
+        addressRepository.save(order.getAddress());
+
+        return orderRepository.save(order);
+    }
+
+    private Orderr checkIfexistAndIfHasNotUser(Long id) {
+        Orderr orderr = orderRepository
+                .findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("Nie odnaleziony koszyk"));
+        if(orderr.getUser()!= null){
+            throw  new OrderNotFoundException("To zamówienie należy do innego użytkownika");
+        }
+        return orderr;
+    }
+
+    @Transactional
+    @Override
+    public void finaliseOrderNotLoggedUser(Long id) {
+        Orderr order = checkIfexistAndIfHasNotUser(id);
+        order.setOrderStatus(OrderStatus.CLOSE);
+        order.getShopCart().setCartStatus(CartStatus.CLOSE);
+        //logika
+
+    }
+
+    @Override
+    public Orderr getOrderNotLoggedUserBy(Long id) {
+        Orderr orderr = checkIfexistAndIfHasNotUser(id);
+        return orderr;
     }
 }

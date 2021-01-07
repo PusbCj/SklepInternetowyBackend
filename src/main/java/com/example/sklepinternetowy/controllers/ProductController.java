@@ -73,9 +73,10 @@ public class ProductController {
     }
 
     @GetMapping("/brand/")
-    public Set<String> getAllBrands(@RequestParam Long categoryId){
+    public Set<String> getAllBrands(@RequestParam(required = false) Long categoryId){
         return productService.getAllBrands(categoryId);
     }
+
 
     @GetMapping("/agecat/")
     public Set<ProductCategoryAge> getAllProductCategoryAge(){

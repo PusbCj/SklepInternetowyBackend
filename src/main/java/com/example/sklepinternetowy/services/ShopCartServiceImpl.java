@@ -38,7 +38,7 @@ public class ShopCartServiceImpl implements ShopCartService {
 
     }
 
-    private ShopCart getCurrentOpenCartOrCreateNew() {
+    public ShopCart getCurrentOpenCartOrCreateNew() {
         Optional<ShopCart> shopCartOpt = getCurrentCart();
         ShopCart shopCart;
         if (shopCartOpt.isEmpty()) {

@@ -32,4 +32,6 @@ public interface ProductService {
     Set<ProductCategoryAge> getAlProductCategoryAge();
 
     Product update(Product product);
+
+    Set<String> getAllBrands();
 }

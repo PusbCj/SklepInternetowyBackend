@@ -28,6 +28,30 @@ public class OrderController {
         return orderService.getCurrentOrderById(id);
     }
 
+    @GetMapping("notlogged/getnew/{cartid}")
+    public Orderr getNewOrder(@PathVariable Long cartid ){
+        return orderService.getNewOrderNotLoggedUser(cartid);
+    }
+
+    @PatchMapping("notlogged/update/")
+    public Orderr updateOrder(@RequestBody Orderr order ){
+        return orderService.updateOrderNotLoggedUser(order);
+    }
+    @GetMapping("notlogged/finalise/{id}")
+    public void finaliseOrderNotLoggedUser(@PathVariable Long id ){
+         orderService.finaliseOrderNotLoggedUser(id);
+    }
+
+    @GetMapping("notlogged/{id}")
+    public Orderr getOrderNotLoggedUserById(@PathVariable Long id ){
+       return orderService.getOrderNotLoggedUserBy(id);
+    }
+
+    @GetMapping("finalise/{id}")
+    public void finaliseOrder(@PathVariable Long id){
+        orderService.finaliseOrder(id);
+    }
+
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping
     public Page<Orderr> getAllOrders(Pageable pageable) {

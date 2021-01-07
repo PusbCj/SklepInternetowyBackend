@@ -20,4 +20,6 @@ public interface ShopCartService {
     ShopCart addProductToCartId(ItemShopCart itemShopCart, Long id);
 
     ShopCart addShopCartToExistingOne(Long id);
+
+    ShopCart getCurrentOpenCartOrCreateNew();
 }

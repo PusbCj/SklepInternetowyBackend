@@ -15,9 +15,11 @@ import org.springframework.boot.CommandLineRunner;
 
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ComandLineStartupRunner implements CommandLineRunner {
@@ -37,6 +39,7 @@ public class ComandLineStartupRunner implements CommandLineRunner {
         this.productCategoryAgeRepository = productCategoryAgeRepository;
     }
 
+    @Transactional
     @Override
     public void run(String... args) throws Exception {
         if (roleRepository.findFirstByName("User").isEmpty()) {
@@ -58,11 +61,14 @@ public class ComandLineStartupRunner implements CommandLineRunner {
             user.setActivate(true);
             userRepo.save(user);
 
-        }else if(userRepo.findByUsername("robertcj92").get().getAddress().size() == 0){
-
-            UserApplication robertcj92 = userRepo.findByUsername("robertcj92").get();
-            robertcj92.getAddress().add(addressRepository.save(new Address()));
-            userRepo.save(robertcj92);
+        }else {
+            UserApplication userApplication = userRepo.findByUsername("robertcj92").get();
+            List<Address> address = userApplication.getAddress();
+            if(address.size() == 0) {
+                UserApplication robertcj92 = userRepo.findByUsername("robertcj92").get();
+                robertcj92.getAddress().add(addressRepository.save(new Address()));
+                userRepo.save(robertcj92);
+            }
         }
 
 

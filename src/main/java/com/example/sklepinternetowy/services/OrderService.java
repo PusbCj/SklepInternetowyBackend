@@ -19,4 +19,15 @@ public interface OrderService {
     Orderr update(Orderr order, Long id);
 
     void delete(Long id);
+
+    void finaliseOrder(Long id);
+
+    Orderr getNewOrderNotLoggedUser(Long cartid);
+
+    Orderr updateOrderNotLoggedUser(Orderr order);
+
+    void finaliseOrderNotLoggedUser(Long id);
+
+
+    Orderr getOrderNotLoggedUserBy(Long id);
 }

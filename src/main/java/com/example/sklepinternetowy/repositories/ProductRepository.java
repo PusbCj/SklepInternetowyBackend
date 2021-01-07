@@ -29,6 +29,9 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query("SELECT DISTINCT u.brand FROM Product u WHERE u.disabled = false AND u.category.id = ?1")
     Set<String> getBrandsEnabledByCategory(Long categoryId);
 
+    @Query("SELECT DISTINCT u.brand FROM Product u")
+    Set<String> getAllBrands();
+
 
     Page<Product> findDistinctByCategory_IdAndProductCategoryAgeListInAndPriceBetweenAndDisabledIsFalseAndBrandIsIn(Long category_id, List<ProductCategoryAge> age, BigDecimal price, BigDecimal price2, Collection<String> brand, Pageable pageable);
 

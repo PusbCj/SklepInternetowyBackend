@@ -165,6 +165,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Orderr> getAllOrdersByUser(Pageable pageable) {
-        return null;
+        UserApplication user = userService.getUserObjectLogged();
+        return orderRepository.findAllByUserId(user.getId(),pageable);
     }
 }

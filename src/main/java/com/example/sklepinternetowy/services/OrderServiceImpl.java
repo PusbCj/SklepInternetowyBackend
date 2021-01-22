@@ -64,7 +64,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Orderr> getAllOrders(Pageable pageable) {
-        return orderRepository.findAll(pageable);
+        return orderRepository.findAllByOrderStatusIsNot(OrderStatus.CREATE,pageable);
     }
 
     @Override
@@ -77,6 +77,7 @@ public class OrderServiceImpl implements OrderService {
     public Orderr update(Orderr order, Long id) {
         getCurrentOrderById(id);
         order.setUser(userService.getUserObjectLogged());
+        addressRepository.save(order.getAddress());
         return orderRepository.save(order);
     }
 
@@ -116,10 +117,11 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
+    @Transactional
     public Orderr updateOrderNotLoggedUser(Orderr order) {
 
         checkIfexistAndIfHasNotUser(order.getId());
-        addressRepository.save(order.getAddress());
+        order.setAddress(addressRepository.save(order.getAddress()));
 
         return orderRepository.save(order);
     }

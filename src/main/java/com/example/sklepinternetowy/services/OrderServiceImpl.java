@@ -63,8 +63,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Orderr> getAllOrders(Pageable pageable) {
-        return orderRepository.findAllByOrderStatusIsNot(OrderStatus.CREATE,pageable);
+    public Page<Orderr> getAllOrders(Long button, Pageable pageable) {
+        if(button == 1){
+            return orderRepository.findAllByOrderStatusIsNot(OrderStatus.CREATE, pageable);
+        }else if( button == 2){
+            return orderRepository.findAllByOrderStatusIs(OrderStatus.UNPAID,pageable);
+        }else if( button == 3){
+            return orderRepository.findAllByOrderStatusIs(OrderStatus.PAID,pageable);
+        }else if( button == 4){
+            return orderRepository.findAllByOrderStatusIs(OrderStatus.CLOSE,pageable);
+        }
+        return orderRepository.findAll(pageable);
     }
 
     @Override
@@ -148,8 +157,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Orderr getOrderNotLoggedUserBy(Long id) {
-        Orderr orderr = checkIfexistAndIfHasNotUser(id);
-        return orderr;
+        return checkIfexistAndIfHasNotUser(id);
     }
 
     @Override

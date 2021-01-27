@@ -1,5 +1,5 @@
 package com.example.sklepinternetowy.models;
 
 public enum OrderStatus {
-    CREATE,CLOSE
+    CREATE,UNPAID,PAID,CLOSE
 }

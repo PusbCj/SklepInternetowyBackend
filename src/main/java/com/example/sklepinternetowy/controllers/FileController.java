@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static com.google.common.io.ByteStreams.toByteArray;
 import static org.apache.tomcat.util.http.fileupload.IOUtils.*;
@@ -41,6 +42,17 @@ public class FileController {
         String filename = fileService.storeFile(file);
 
         return new ResponseEntity<>("http://195.80.229.73:443/photo/"+filename, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value="api/v1/api/allfile/", method= RequestMethod.POST,
+            consumes= {"multipart/form-data"})
+    public ResponseEntity<String> saveAll( @RequestPart("file") List<MultipartFile> files){
+
+        files.forEach(fileService::storeFile);
+
+
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
 

@@ -27,4 +27,6 @@ public interface UserService {
     UserApplication getUserObjectLogged();
 
     Optional<UserApplication> getOptionalUserLogged();
+
+    void save(UserApplication userApplication);
 }

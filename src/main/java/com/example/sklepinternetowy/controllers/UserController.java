@@ -47,6 +47,12 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('Admin')")
+    @PostMapping
+    public void saveUser(@RequestBody UserApplication userApplication){
+        userService.save(userApplication);
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("{id}")
     public ResponseEntity<UserApplication> getById(@PathVariable Long id){
         var optionalUser = userApplicationRepository.findById(id);

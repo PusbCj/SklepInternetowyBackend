@@ -83,8 +83,8 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("admin/")
-    public Page<Orderr> getAllOrders(Pageable pageable) {
-        return orderService.getAllOrders(pageable);
+    public Page<Orderr> getAllOrders(@RequestParam Long button,Pageable pageable) {
+        return orderService.getAllOrders(button ,pageable);
     }
 
     @PreAuthorize("hasAuthority('Admin')")

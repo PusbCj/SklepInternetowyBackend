@@ -183,4 +183,18 @@ public class UserServiceImpl implements UserService{
     public Optional<UserApplication> getOptionalUserLogged(){
         return userApplicationRepository.findByUsername(getUserFromContext());
     }
+
+    @Override
+    @Transactional
+    public void save(UserApplication userApplication) {
+        UserApplication user = userApplicationRepository.findById(userApplication.getId()).get();
+        user.setUsername(userApplication.getUsername());
+        user.setEmail(userApplication.getEmail());
+        user.setFirstName(userApplication.getFirstName());
+        user.setLastName(userApplication.getLastName());
+        user.setRoleList(userApplication.getRoleList());
+        user.setActivate(userApplication.getActivate());
+
+
+    }
 }

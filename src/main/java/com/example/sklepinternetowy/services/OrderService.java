@@ -12,7 +12,7 @@ public interface OrderService {
 
     Orderr getCurrentOrderById(Long id);
 
-    Page<Orderr> getAllOrders(Pageable pageable);
+    Page<Orderr> getAllOrders(Long button, Pageable pageable);
 
     Orderr save(Orderr order);
 

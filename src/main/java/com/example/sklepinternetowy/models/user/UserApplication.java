@@ -2,6 +2,7 @@ package com.example.sklepinternetowy.models.user;
 
 import com.example.sklepinternetowy.models.Address;
 import com.example.sklepinternetowy.models.user.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -42,6 +43,7 @@ public class UserApplication implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> permissionSet = roleList.stream().flatMap(role -> role.getPermissionList().stream()).collect(Collectors.toSet());
         permissionSet.addAll(roleList);

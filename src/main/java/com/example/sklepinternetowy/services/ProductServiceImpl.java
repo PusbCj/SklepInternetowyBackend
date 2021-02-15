@@ -6,9 +6,7 @@ import com.example.sklepinternetowy.models.ProductCategoryAge;
 import com.example.sklepinternetowy.repositories.PhotoUrlRepository;
 import com.example.sklepinternetowy.repositories.ProductCategoryAgeRepository;
 import com.example.sklepinternetowy.repositories.ProductRepository;
-
-import io.swagger.annotations.Scope;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,15 +31,19 @@ public class ProductServiceImpl implements ProductService{
 
 
     @Override
+    @Cacheable(cacheNames = "AllProductByCategory")
     public Page<Product> getAllProductsByCategory(Long categoryNumber, Pageable pageable) {
         return productRepository.findAllByCategory_IdOrderByPriceAsc(categoryNumber, pageable);
     }
+
     @Override
+    @Cacheable(cacheNames = "AllProductByCategoryDesc")
     public Page<Product> getAllProductsByCategoryDesc(Long categoryNumber, Pageable pageable) {
         return productRepository.findAllByCategory_IdOrderByPriceDesc(categoryNumber, pageable);
     }
 
     @Override
+    @Cacheable(cacheNames = "AllProductByCategoryWithoutParam")
     public Page<Product> getAllProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
@@ -62,8 +64,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
 
-
     @Override
+    @Cacheable(cacheNames = "AllProductByCategoryMultiParam")
     public Page<Product> getAllProductsByCategory(Long categoryNumber, Pageable pageable, List<String> brands, List<ProductCategoryAge> age, BigDecimal priceLow, BigDecimal priceHigh) {
         if((brands==null || brands.size()==0) & age == null & priceLow ==null & priceHigh ==null){
             return getAllProductsByCategory(categoryNumber, pageable);
@@ -82,11 +84,13 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Cacheable(cacheNames = "GetOneProductById")
     public Product getById(Long id) {
         return productRepository.findById(id).orElseThrow(()->new ProductNotFindException("Nie odnaleziono produktu"));
     }
 
     @Override
+    @Cacheable(cacheNames = "GetAllBrandsByCategory")
     public Set<String> getAllBrands(Long categoryId) {
         if(categoryId == null){
             return getAllBrands();
@@ -96,6 +100,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Cacheable(cacheNames = "GetAllCategoryAge")
     public Set<ProductCategoryAge> getAlProductCategoryAge() {
         return new HashSet<>( productCategoryAgeRepository.findAll());
     }
@@ -107,6 +112,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Cacheable(cacheNames = "GetAllBrands")
     public Set<String> getAllBrands() {
         return productRepository.getAllBrands();
     }

@@ -3,7 +3,9 @@ package com.example.sklepinternetowy.models.user;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -47,7 +49,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return name;
+        return "ROLE_" + name;
     }
 
     public Long getId() {
